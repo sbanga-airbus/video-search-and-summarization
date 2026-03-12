@@ -35,7 +35,6 @@ services:
       - "${TRT_ENGINE_PATH:-/dummy}${TRT_ENGINE_PATH:+:${TRT_ENGINE_PATH:-}}"
       - "${GSAM_MODEL_ROOT_DIR:-/dummy}${GSAM_MODEL_ROOT_DIR:+:${GSAM_MODEL_ROOT_DIR:-}}"
       - "${VIA_SRC_DIR:-/dummy}${VIA_SRC_DIR:+:/opt/nvidia/via:ro}"
-      - "./start_via.sh:/opt/nvidia/via/start_via.sh"
       - "${VIA_LOG_DIR:-/dummy}${VIA_LOG_DIR:+:/tmp/via-logs}"
       - via-hf-cache:/tmp/huggingface
       - "${CV_PIPELINE_TRACKER_CONFIG:-/dummy}${CV_PIPELINE_TRACKER_CONFIG:+:/opt/nvidia/via/config/default_tracker_config.yml}"
@@ -133,8 +132,6 @@ services:
       ES_PORT: "${ES_PORT:-9200}"
       ES_TRANSPORT_PORT: "${ES_TRANSPORT_PORT:-9300}"
       ES_HOST: "${ES_HOST:-elasticsearch}"
-      MPLBACKEND: "Agg"
-      # CA_RAG_EMBEDDINGS_DIMENSION: "500"
     depends_on:
       milvus-standalone:
         condition: service_healthy
@@ -149,6 +146,7 @@ services:
         soft: -1
         hard: -1
       stack: 67108864
+    ipc: host
     stdin_open: true
     tty: true
     extra_hosts:
