@@ -1,0 +1,47 @@
+Here's a summary of all ports across run.sh and compose.yaml:                                                                  
+                                    
+  ┌─────────────────────────┬──────────────────────────┐                                                                         
+  │         Service         │         Port(s)          │                                                                         
+  ├─────────────────────────┼──────────────────────────┤                                                                         
+  │ LLM NIM (llama-3.3-70b) │ 8088                     │                                                                         
+  ├─────────────────────────┼──────────────────────────┤                                                                         
+  │ VSS Backend             │ 8100                     │
+  ├─────────────────────────┼──────────────────────────┤
+  │ VSS Frontend            │ 9101                     │
+  ├─────────────────────────┼──────────────────────────┤
+  │ ArangoDB                │ 8529                     │
+  ├─────────────────────────┼──────────────────────────┤
+  │ ASR HTTP                │ 9000                     │
+  ├─────────────────────────┼──────────────────────────┤
+  │ Minio                   │ 9002 (changed from 9000) │
+  ├─────────────────────────┼──────────────────────────┤
+  │ Minio WebUI             │ 9003 (changed from 9001) │
+  ├─────────────────────────┼──────────────────────────┤
+  │ Minio WebUI default     │ 9001 — free              │
+  ├─────────────────────────┼──────────────────────────┤
+  │ Embedding NIM           │ 9234                     │
+  ├─────────────────────────┼──────────────────────────┤
+  │ Reranker NIM            │ 9235                     │
+  ├─────────────────────────┼──────────────────────────┤
+  │ ASR gRPC                │ 50051                    │
+  ├─────────────────────────┼──────────────────────────┤
+  │ Neo4j HTTP              │ 7474                     │
+  ├─────────────────────────┼──────────────────────────┤
+  │ Neo4j Bolt              │ 7687                     │
+  ├─────────────────────────┼──────────────────────────┤
+  │ Milvus HTTP             │ 9091                     │
+  ├─────────────────────────┼──────────────────────────┤
+  │ Milvus gRPC             │ 19530                    │
+  ├─────────────────────────┼──────────────────────────┤
+  │ Elasticsearch           │ 9200, 9300               │
+  └─────────────────────────┴──────────────────────────┘
+
+  One remaining issue: MINIO_PORT=9002 is set as the host port, but compose.yaml line 179 maps ${MINIO_PORT}:${MINIO_PORT} — this
+   means it tries to bind container port 9002 as well, but Minio inside the container still listens on 9002 (passed via
+  --address), so that's consistent.
+
+  However, via-server connects to Minio internally via the Docker network using the service name minio and MINIO_PORT. Since
+  MINIO_PORT=9002 is passed to via-server as an env var (line 111), it will try to reach minio:9002 — and the Minio container
+  does listen on 9002 internally. So this is correct.
+
+  No other conflicts found.

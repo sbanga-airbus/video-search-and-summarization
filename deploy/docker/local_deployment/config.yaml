@@ -39,8 +39,8 @@ tools:
   chat_llm:
     type: llm
     params:
-      model: meta/llama-3.1-70b-instruct
-      base_url: "http://host.docker.internal:8000/v1" #FIXME - update url to running LLM Instance
+      model: meta/llama-3.3-70b-instruct
+      base_url: "http://host.docker.internal:8088/v1" #FIXME - update url to running LLM Instance
       max_tokens: 2048
       temperature: 0.2
       top_p: 0.7
@@ -48,8 +48,8 @@ tools:
   summarization_llm:
     type: llm
     params:
-      model: meta/llama-3.1-70b-instruct
-      base_url: "http://host.docker.internal:8000/v1" #FIXME - update url to running LLM Instance
+      model: meta/llama-3.3-70b-instruct
+      base_url: "http://host.docker.internal:8088/v1" #FIXME - update url to running LLM Instance
       max_tokens: 2048
       temperature: 0.2
       top_p: 0.7
@@ -57,8 +57,8 @@ tools:
   notification_llm:
     type: llm
     params:
-      model: meta/llama-3.1-70b-instruct
-      base_url: "http://host.docker.internal:8000/v1" #FIXME - update url to running LLM Instance
+      model: meta/llama-3.3-70b-instruct
+      base_url: "http://host.docker.internal:8088/v1" #FIXME - update url to running LLM Instance
       max_tokens: 2048
       temperature: 0.2
       top_p: 0.7
